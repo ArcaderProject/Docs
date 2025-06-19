@@ -1,0 +1,30 @@
+site_name: Arcader
+site_url: https://arcader.hazdu.de
+copyright: Copyright &copy; 2024 <a href="https://hazdu.de">Haz_Du</a> und <a href="https://gnm.dev">GNM</a>
+repo_url: https://github.com/HazDu/Arcader
+edit_uri: https://github.com/HazDu/Arcader/edit/main/docs
+theme:
+  name: material
+  language: de
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    primary: red
+    scheme: slate
+  features:
+    - navigation.footer
+extra:
+  generator: false
+extra_css:
+  - assets/fonts.css
+nav:
+  - Willkommen: index.md
+  - Vorbereitung: preparation.md
+  - Aufbau: hardware.md
+  - Software: software.md
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
