@@ -180,6 +180,63 @@ es erst dann nachzuladen, wenn du es wirklich anzeigst.
 
 Ist `coverData` leer, gibt es kein Cover - dann zeig einfach einen Platzhalter.
 
+### GET_APPS
+
+Neben Spielen kann Arcader auch **Apps** starten - das sind entweder Web-Apps
+(ein Vollbild-Browser, z. B. für Jellyfin oder YouTube) oder native Programme.
+`GET_APPS` holt die Liste der aktuell aktivierten Apps, in der im Dashboard
+festgelegten Reihenfolge.
+
+```json
+→ { "type": "GET_APPS", "requestId": "req_6", "data": {} }
+← {
+    "requestId": "req_6",
+    "type": "GET_APPS_RESPONSE",
+    "success": true,
+    "data": {
+      "apps": [
+        {
+          "id": "45d24f0f2e37de2731373988a66bcaec",
+          "name": "Jellyfin",
+          "type": "web",
+          "url": "https://jellyfin.example/tv",
+          "userAgent": null,
+          "exec": null,
+          "args": [],
+          "icon": true,
+          "enabled": true,
+          "position": 0
+        }
+      ]
+    }
+  }
+```
+
+`type` ist `"web"` oder `"native"`. Bei `web`-Apps ist `url` gesetzt (und
+optional `userAgent`), bei `native`-Apps `exec` und `args`. `icon` sagt dir - wie
+`cover_art` bei Spielen - nur, **ob** es ein Icon gibt. Die `id` brauchst du für
+`GET_APP_ICON` und `LAUNCH_APP`.
+
+Genau wie bei den Spielen gilt: einmal holen, cachen, und bei einem
+`APPS_UPDATED`-Event neu laden.
+
+### GET_APP_ICON
+
+Holt das Icon einer App als **Base64**-String (PNG) - das Gegenstück zu
+`GET_COVER`.
+
+```json
+→ { "type": "GET_APP_ICON", "requestId": "req_7", "data": { "appId": "45d24f0f..." } }
+← {
+    "requestId": "req_7",
+    "type": "GET_APP_ICON_RESPONSE",
+    "success": true,
+    "data": { "appId": "45d24f0f...", "iconData": "iVBORw0KGgo..." }
+  }
+```
+
+Ist `iconData` leer, hat die App kein Icon - dann zeig einen Platzhalter.
+
 ### START_GAME
 
 Startet ein Spiel. Der Daemon prüft dabei selbst, ob genug Credits bzw. Zeit da
@@ -204,6 +261,34 @@ stattdessen:
 Nach einem erfolgreichen Start schickt der Daemon außerdem ein
 `UPDATE_SCREEN`-Event mit `"LOADING"` - du musst den Bildschirmwechsel also gar
 nicht selbst anstoßen (siehe Events).
+
+### LAUNCH_APP
+
+Startet eine App. Das läuft **genau wie `START_GAME`**: Der Daemon prüft selbst,
+ob genug Credits bzw. Zeit da ist, zieht ggf. ein Credit ab und startet die App
+(bei `web` einen Vollbild-Browser, bei `native` das Programm). Apps und Spiele
+teilen sich denselben Lauf-Slot - es kann also immer nur **eins** gleichzeitig
+laufen.
+
+```json
+→ { "type": "LAUNCH_APP", "requestId": "req_8", "data": { "appId": "45d24f0f..." } }
+← {
+    "requestId": "req_8",
+    "type": "LAUNCH_APP_RESPONSE",
+    "data": { "success": true, "app": { "id": "45d24f0f...", "name": "Jellyfin", "type": "web" } }
+  }
+```
+
+Klappt es nicht (kein Credit, es läuft schon etwas, kein Browser installiert
+...), kommt stattdessen:
+
+```json
+← { "requestId": "req_8", "type": "LAUNCH_APP_ERROR", "error": "No credits available" }
+```
+
+Wie beim Spielstart schickt der Daemon danach ein `UPDATE_SCREEN` →
+`"LOADING"`. Beendet wird eine laufende App über dieselben Wege wie ein Spiel
+(`EXIT_GAME` bzw. das Pausenmenü).
 
 ### GET_COIN_STATUS
 
@@ -346,6 +431,7 @@ Auf `select` bzw. `back` reagierst du dann, indem du `RESUME_GAME` oder
 |-------|-----------|
 | `GAMES_UPDATED` | Die Spielebibliothek hat sich geändert (Spiel hinzugefügt/gelöscht/umbenannt, Core geändert oder die aktive Liste umgestellt). Lade deine Spieleliste mit `GET_GAMES` neu. Es sind keine Daten mit dabei - das Event ist nur ein "hol dir frische Daten"-Signal. |
 | `COVER_UPDATED` | Nur das Cover eines einzelnen Spiels hat sich geändert. `data.gameId` sagt dir welches. Wirf das gecachte Bild für diese ID weg und hol es mit `GET_COVER` neu - die Liste selbst musst du **nicht** neu laden. |
+| `APPS_UPDATED` | Der App-Katalog hat sich geändert (App hinzugefügt/gelöscht/bearbeitet, umsortiert oder aktiviert/deaktiviert, Icon getauscht). Lade deine App-Liste mit `GET_APPS` neu - das Gegenstück zu `GAMES_UPDATED` für Apps. Keine Daten mit dabei. |
 
 Diese beiden Events sind der Kern des "lebendigen" Verhaltens. Alles, was im
 Dashboard oder in der Mobile-App an der Bibliothek geändert wird, landet so
@@ -368,12 +454,13 @@ eines Frontends:
    Lese-Loop starten, der Zeilen puffert und als JSON parst.
 2. **Ping.** Alle paar Sekunden `HELLO` schicken. Kommt lange keine Antwort mehr,
    ist der Daemon weg - dann versuchst du, neu zu verbinden.
-3. **Grundzustand holen.** Einmal `GET_COIN_STATUS` und `GET_GAMES` schicken,
-   damit du weißt, wo du stehst.
+3. **Grundzustand holen.** Einmal `GET_COIN_STATUS`, `GET_GAMES` und `GET_APPS`
+   schicken, damit du weißt, wo du stehst.
 4. **Auf Events hören.** Für jedes Event eine Reaktion:
     - `UPDATE_SCREEN` → Bildschirm wechseln.
     - `COIN_STATUS` / `COIN_INSERTED` → Münzbildschirm aktualisieren.
     - `GAMES_UPDATED` → `GET_GAMES` neu holen.
+    - `APPS_UPDATED` → `GET_APPS` neu holen.
     - `COVER_UPDATED` → das eine Cover neu holen.
     - `OVERLAY_*` → Pausenmenü zeigen/steuern.
     - `TIMER_*` / `USB_*` → entsprechend anzeigen.
