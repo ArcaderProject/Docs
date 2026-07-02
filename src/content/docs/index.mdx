@@ -34,6 +34,15 @@ hero:
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import ImagerDownloads from '../../components/ImagerDownloads.astro';
+
+## Direkt loslegen
+
+Der schnellste Weg zu einem spielbereiten Arcader: Schnapp dir den **Arcader
+Imager**, steck einen USB-Stick rein und schreib Arcader OS drauf. Danach nur noch
+davon booten. Alle Details dazu stehen auf der [Software-Seite](/software/).
+
+<ImagerDownloads />
 
 ## Was steckt dahinter?
 
@@ -61,5 +70,7 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
   <LinkCard title="Vorbereitung" href="/preparation/" description="Komponenten, Baumaterial und Werkzeug – die komplette Einkaufsliste." />
   <LinkCard title="Aufbau" href="/hardware/" description="Vom Grundgestell über das Button-Panel bis zur Verkleidung und zum Coin Acceptor." />
   <LinkCard title="Software" href="/software/" description="Arcader installieren – auf dem Automaten, einem alten PC oder als Bootstick." />
+  <LinkCard title="Dashboard" href="/dashboard/" description="Spiele hochladen, Emulatoren zuweisen und den Münzschacht einrichten." />
+  <LinkCard title="Mobile-App" href="/mobile/" description="Deinen Automaten bequem vom Handy aus verwalten." />
   <LinkCard title="Eigenes Frontend" href="/frontend/" description="Bau deine eigene Oberfläche auf dem arcaderd-Socket." />
 </CardGrid>

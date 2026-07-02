@@ -36,6 +36,8 @@ export default defineConfig({
         { label: 'Vorbereitung', slug: 'preparation' },
         { label: 'Aufbau', slug: 'hardware' },
         { label: 'Software', slug: 'software' },
+        { label: 'Dashboard', slug: 'dashboard' },
+        { label: 'Mobile-App', slug: 'mobile' },
         { label: 'Eigenes Frontend', slug: 'frontend' },
       ],
     }),
