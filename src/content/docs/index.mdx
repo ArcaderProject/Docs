@@ -1,0 +1,65 @@
+---
+title: Arcader
+description: Open-Source-Emulation für Retro-Games und die komplette Bauanleitung für deinen eigenen Arcade-Automaten.
+template: splash
+hero:
+  tagline: Open-Source-Emulation für Retro-Games – plus die komplette Schritt-für-Schritt-Anleitung für deinen eigenen Arcade-Automaten.
+  image:
+    html: |
+      <model-viewer
+        src="/assets/arcade_machine_wood_base.glb"
+        ios-src="/assets/Arcade_Machine_Wood_Base.usdz"
+        alt="Interaktives 3D-Modell eines Arcade-Automaten"
+        camera-controls
+        auto-rotate
+        camera-orbit="-135deg 75deg auto"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        shadow-intensity="1"
+        style="width: 100%; height: 340px; --poster-color: transparent;">
+      </model-viewer>
+  actions:
+    - text: Los geht's
+      link: /preparation/
+      icon: right-arrow
+      variant: primary
+    - text: Software installieren
+      link: /software/
+      icon: right-arrow
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/ArcaderProject/Arcader
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Was steckt dahinter?
+
+<CardGrid>
+  <Card title="Was ist Arcader?" icon="rocket">
+    Eine Open-Source-Emulationssoftware auf RetroArch-Basis. Läuft als `.ISO`
+    auf so ziemlich jedem Computer, unterstützt – anders als z.&nbsp;B. RetroPie
+    – einen echten Coin-Slot und gibt's sogar als Bootstick für den USB-Stick.
+  </Card>
+  <Card title="Der Automat" icon="setting">
+    Ein Großteil der Doku erklärt dir Schritt für Schritt, wie du deinen eigenen
+    Arcade-Automaten baust – vom Holzgestell übers Button-Panel bis zum Verkabeln
+    des Münzschachts.
+  </Card>
+  <Card title="Warum das Ganze?" icon="star">
+    Ganz einfach: das Teil zu bauen und damit zu zocken ist extrem fun. Ein
+    Projekt, das dich handwerklich und technisch fordert. Und am Ende heißt es:
+    Zeit fürs Retro-Gaming!
+  </Card>
+</CardGrid>
+
+## Leg direkt los
+
+<CardGrid>
+  <LinkCard title="Vorbereitung" href="/preparation/" description="Komponenten, Baumaterial und Werkzeug – die komplette Einkaufsliste." />
+  <LinkCard title="Aufbau" href="/hardware/" description="Vom Grundgestell über das Button-Panel bis zur Verkleidung und zum Coin Acceptor." />
+  <LinkCard title="Software" href="/software/" description="Arcader installieren – auf dem Automaten, einem alten PC oder als Bootstick." />
+  <LinkCard title="Eigenes Frontend" href="/frontend/" description="Bau deine eigene Oberfläche auf dem arcaderd-Socket." />
+</CardGrid>

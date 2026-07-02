@@ -1,0 +1,154 @@
+@font-face {
+  font-family: "Retro Gaming";
+  src: url("/assets/font.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --sl-font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --sl-font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
+    Consolas, monospace;
+
+  --arcader-font-retro: "Retro Gaming", "Press Start 2P", monospace;
+}
+
+:is(h1, h2, h3, h4, h5, h6),
+.site-title,
+.sidebar-content a,
+.sl-nav a,
+a.site-title span,
+starlight-menu-button,
+.pagination-links a span {
+  font-family: var(--arcader-font-retro);
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  -webkit-font-smoothing: none;
+}
+
+:root {
+  --sl-color-accent-low: #ffd9da;
+  --sl-color-accent: #cf2f34;
+  --sl-color-accent-high: #5c0c0f;
+}
+
+:root[data-theme="dark"] {
+  --sl-color-accent-low: #430c0c;
+  --sl-color-accent: #e5484d;
+  --sl-color-accent-high: #ffb3b3;
+
+  --sl-color-bg: #1a1c24;
+  --sl-color-bg-nav: #21232d;
+  --sl-color-bg-sidebar: #1e202a;
+  --sl-color-hairline-shade: #2c2f3a;
+}
+
+header.header {
+  background: linear-gradient(90deg, #e5484d, #cf3b40);
+  border-bottom: 1px solid #a82c30;
+}
+header.header a,
+header.header .site-title,
+header.header starlight-menu-button button,
+header.header starlight-theme-select {
+  color: #fff;
+}
+
+header.header site-search > button {
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+}
+header.header site-search > button kbd {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border: 0;
+  border-radius: 0;
+}
+
+::selection {
+  background: #e5484d;
+  color: #fff;
+  text-shadow: none;
+}
+
+* {
+  scrollbar-color: #e5484d var(--sl-color-bg-nav);
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--sl-color-bg-nav);
+}
+::-webkit-scrollbar-thumb {
+  background: #e5484d;
+  border: 3px solid var(--sl-color-bg-nav);
+  border-radius: 0;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  text-shadow: 0 0 8px rgba(229, 72, 77, 0.3);
+}
+
+.sl-markdown-content h2 {
+  border-bottom: 2px dashed var(--sl-color-hairline-shade);
+  padding-bottom: 0.2em;
+}
+
+.sl-markdown-content hr {
+  border: 0;
+  border-top: 2px dashed var(--sl-color-gray-5);
+}
+
+.sl-markdown-content a:hover {
+  text-shadow: 0 0 8px rgba(229, 72, 77, 0.6);
+}
+
+.sl-markdown-content :is(img, table, th, td, pre) {
+  border-radius: 0;
+}
+
+.starlight-aside {
+  border-radius: 0;
+  border-inline-start-width: 4px;
+}
+
+.card {
+  border-radius: 0;
+  border-width: 2px;
+}
+
+.expressive-code {
+  --ec-brdRad: 0px;
+  --ec-brdWd: 2px;
+}
+
+.pagination-links a {
+  border-radius: 0;
+  border-width: 2px;
+}
+
+.hero .actions a {
+  border-radius: 0;
+}
+
+.sidebar-content a,
+.sidebar-content summary,
+.sidebar-content .large,
+nav.sidebar a[aria-current="page"] {
+  border-radius: 0;
+}
+
+nav.sidebar a[aria-current="page"] {
+  border-inline-start: 3px solid var(--sl-color-text-accent);
+}
+
+.sidebar-content a:hover {
+  text-shadow: 0 0 8px rgba(229, 72, 77, 0.5);
+}
